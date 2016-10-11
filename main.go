@@ -49,12 +49,6 @@ func main() {
     Help:      "The result of each count method.",
   }, []string{})
 
-  //var svc StringService
-  //svc = stringService{}
-  //svc = proxyingMiddleware(*proxy, ctx, logger)(svc)
-  //svc = loggingMiddleware(logger)(svc)
-  //svc = instrumentingMiddleware(requestCount, requestLatency, countResult)(svc)
-
   var services []transport.Service
   services = append(services, stringModule.String{})
 
