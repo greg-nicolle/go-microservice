@@ -65,4 +65,5 @@ type Service interface {
   GetService(instances string, ctx context.Context, logger log.Logger, requestCount metrics.Counter,
   requestLatency metrics.Histogram,
   countResult metrics.Histogram) interface{}
+  GetServiceName() string
 }

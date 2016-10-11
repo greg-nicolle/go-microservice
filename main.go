@@ -13,12 +13,14 @@ import (
   "github.com/greg-nicolle/kit-test/transport"
   "github.com/greg-nicolle/kit-test/string"
   kitprometheus "github.com/go-kit/kit/metrics/prometheus"
+  "fmt"
 )
 
 func main() {
   var (
     listen = flag.String("listen", ":8080", "HTTP listen address")
     proxy = flag.String("proxy", "", "Optional comma-separated list of URLs to proxy uppercase requests")
+    serviceName = flag.String("service", "", "Service you want to start")
   )
   flag.Parse()
 
@@ -49,17 +51,21 @@ func main() {
     Help:      "The result of each count method.",
   }, []string{})
 
-  var services []transport.Service
-  services = append(services, stringModule.String{})
+  services := map[string]transport.Service{}
+  fmt.Println(stringModule.String{}.GetServiceName())
+  services[stringModule.String{}.GetServiceName()] = stringModule.String{}
+
+  if service, isPresent := services[*serviceName]; isPresent {
+    services = map[string]transport.Service{service.GetServiceName():service}
+  }
 
   for _, service := range services {
-
     for _, endpoint := range service.GetServiceEndpoints() {
       handler := httptransport.NewServer(
         ctx,
         endpoint.MakeEndpoint(service.GetService(*proxy, ctx, logger, requestCount,
-        requestLatency,
-        countResult )),
+          requestLatency,
+          countResult)),
         transport.DecodeRequest(endpoint.GetIo().Request),
         transport.EncodeResponse,
       )

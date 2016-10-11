@@ -14,7 +14,10 @@ func (String)GetServiceEndpoints() []transport.GEndpoint {
     CountEndpoint{}}
 }
 
-func (String) GetService(instances string, ctx context.Context, logger log.Logger, requestCount metrics.Counter,
+func (String) GetService(instances string,
+ctx context.Context,
+logger log.Logger,
+requestCount metrics.Counter,
 requestLatency metrics.Histogram,
 countResult metrics.Histogram) interface{} {
 
@@ -25,4 +28,8 @@ countResult metrics.Histogram) interface{} {
   svc = instrumentingMiddleware(requestCount, requestLatency, countResult)(svc)
 
   return svc
+}
+
+func (String)GetServiceName() string {
+  return "string"
 }
