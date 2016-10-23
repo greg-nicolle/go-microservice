@@ -2,8 +2,8 @@ language: go
 go:
   - 1.7.1
 
-services:
-  - docker
+install:
+  - go get -u github.com/golang/lint/golint
 
 before_script:
   - make check

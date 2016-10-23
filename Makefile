@@ -13,7 +13,7 @@ test:
 	@go test -race -v $(shell go list ./...)
 
 lint:
-	@go list ./... | grep -v /vendor/ | xargs -L1 golint -set_exit_status
+	@go list ./... | xargs -L1 golint -set_exit_status
 
 vet:
 	@go vet $(shell go list ./...)

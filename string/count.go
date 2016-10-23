@@ -21,7 +21,10 @@ func (CountEndpoint) MakeEndpoint(svc interface{}) endpoint.Endpoint {
 }
 
 func (CountEndpoint) GetIo() transport.Io {
-  return transport.Io{countRequest{}, countResponse{}, "/count"}
+  return transport.Io{
+    Request: countRequest{},
+    Response: countResponse{},
+    Path: "/count"}
 }
 
 type countRequest struct {

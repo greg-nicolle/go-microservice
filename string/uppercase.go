@@ -6,6 +6,7 @@ import (
   "github.com/go-kit/kit/endpoint"
   "github.com/greg-nicolle/kit-test/transport"
 )
+
 type UppercaseEndpoint struct{}
 
 func (UppercaseEndpoint) MakeEndpoint(svc interface{}) endpoint.Endpoint {
@@ -20,7 +21,10 @@ func (UppercaseEndpoint) MakeEndpoint(svc interface{}) endpoint.Endpoint {
 }
 
 func (UppercaseEndpoint) GetIo() transport.Io {
-  return transport.Io{uppercaseRequest{}, uppercaseResponse{}, "/uppercase"}
+  return transport.Io{
+    Request: uppercaseRequest{},
+    Response: uppercaseResponse{},
+    Path: "/uppercase"}
 }
 
 type uppercaseRequest struct {
