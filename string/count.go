@@ -4,7 +4,7 @@ import (
   "golang.org/x/net/context"
 
   "github.com/go-kit/kit/endpoint"
-  "github.com/greg-nicolle/kit-test/transport"
+  "github.com/greg-nicolle/go-microservice/transport"
 )
 
 type CountEndpoint struct{}

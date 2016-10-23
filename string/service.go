@@ -1,7 +1,7 @@
 package stringModule
 
 import (
-  "github.com/greg-nicolle/kit-test/transport"
+  "github.com/greg-nicolle/go-microservice/transport"
   "github.com/go-kit/kit/log"
   "golang.org/x/net/context"
   "github.com/go-kit/kit/metrics"

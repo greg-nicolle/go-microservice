@@ -1,6 +1,6 @@
-BINARY=microservice
+BINARY=go-microservice
 
-DOCKER_IMAGE_NAME=greg-nicolle/microservice
+DOCKER_IMAGE_NAME=greg-nicolle/go-microservice
 
 .DEFAULT_GOAL: ${BINARY}
 

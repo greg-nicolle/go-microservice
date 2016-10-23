@@ -10,8 +10,8 @@ import (
 
   "github.com/go-kit/kit/log"
   httptransport "github.com/go-kit/kit/transport/http"
-  "github.com/greg-nicolle/kit-test/transport"
-  "github.com/greg-nicolle/kit-test/string"
+  "github.com/greg-nicolle/go-microservice/transport"
+  "github.com/greg-nicolle/go-microservice/string"
   kitprometheus "github.com/go-kit/kit/metrics/prometheus"
 )
 

@@ -15,7 +15,7 @@ import (
 
   "github.com/go-kit/kit/ratelimit"
   httptransport "github.com/go-kit/kit/transport/http"
-  "github.com/greg-nicolle/kit-test/transport"
+  "github.com/greg-nicolle/go-microservice/transport"
 )
 
 func Split(s string) []string {

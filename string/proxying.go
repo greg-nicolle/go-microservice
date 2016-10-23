@@ -7,8 +7,8 @@ import (
 
   "github.com/go-kit/kit/endpoint"
   "github.com/go-kit/kit/log"
-  "github.com/greg-nicolle/kit-test/transport"
-  "github.com/greg-nicolle/kit-test/proxy"
+  "github.com/greg-nicolle/go-microservice/transport"
+  "github.com/greg-nicolle/go-microservice/proxy"
 )
 
 func proxyingMiddleware(instances string, ctx context.Context, logger log.Logger) ServiceMiddleware {
