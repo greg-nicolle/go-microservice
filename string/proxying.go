@@ -11,7 +11,7 @@ import (
   "github.com/greg-nicolle/go-microservice/proxy"
 )
 
-func proxyingMiddleware(instances string, ctx context.Context, logger log.Logger) ServiceMiddleware {
+func proxyingMiddleware(ctx context.Context, instances string, logger log.Logger) ServiceMiddleware {
   // If instances is empty, don't proxy.
   if instances == "" {
     logger.Log("proxy_to", "none")
@@ -27,8 +27,8 @@ func proxyingMiddleware(instances string, ctx context.Context, logger log.Logger
   return func(next StringService) StringService {
     return proxymw{ctx,
       next,
-      proxy.CreadteProxiingEndpoint(instanceList, ctx, transport.DecodeResponse(uppercaseResponse{}), "/uppercase"),
-      proxy.CreadteProxiingEndpoint(instanceList, ctx, transport.DecodeResponse(countResponse{}), "/count")}
+      proxy.CreatedProxiingEndpoint(ctx, instanceList, transport.DecodeResponse(uppercaseResponse{}), "/uppercase"),
+      proxy.CreatedProxiingEndpoint(ctx, instanceList, transport.DecodeResponse(countResponse{}), "/count")}
   }
 }
 

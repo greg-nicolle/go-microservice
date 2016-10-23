@@ -7,9 +7,9 @@ import (
   "github.com/greg-nicolle/go-microservice/transport"
 )
 
-type UppercaseEndpoint struct{}
+type uppercaseEndpoint struct{}
 
-func (UppercaseEndpoint) MakeEndpoint(svc interface{}) endpoint.Endpoint {
+func (uppercaseEndpoint) MakeEndpoint(svc interface{}) endpoint.Endpoint {
   return func(ctx context.Context, request interface{}) (interface{}, error) {
     req := request.(uppercaseRequest)
     v, err := svc.(StringService).Uppercase(req.S)
@@ -20,7 +20,7 @@ func (UppercaseEndpoint) MakeEndpoint(svc interface{}) endpoint.Endpoint {
   }
 }
 
-func (UppercaseEndpoint) GetIo() transport.Io {
+func (uppercaseEndpoint) GetIo() transport.Io {
   return transport.Io{
     Request: uppercaseRequest{},
     Response: uppercaseResponse{},

@@ -61,7 +61,7 @@ func main() {
     for _, endpoint := range service.GetServiceEndpoints() {
       handler := httptransport.NewServer(
         ctx,
-        endpoint.MakeEndpoint(service.GetService(*proxy, ctx, logger, requestCount,
+        endpoint.MakeEndpoint(service.GetService(ctx, *proxy, logger, requestCount,
           requestLatency,
           countResult)),
         transport.DecodeRequest(endpoint.GetIo().Request),

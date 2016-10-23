@@ -13,7 +13,7 @@ import (
   "github.com/go-kit/kit/endpoint"
   "github.com/go-kit/kit/metrics"
 )
-
+// DecodeRequest is a generic implementation for decoding a request
 func DecodeRequest(i interface{}) httptransport.DecodeRequestFunc {
   request := reflect.New(reflect.TypeOf(i)).Interface()
   return func(_ context.Context, r *http.Request) (interface{}, error) {
@@ -25,6 +25,7 @@ func DecodeRequest(i interface{}) httptransport.DecodeRequestFunc {
   }
 }
 
+// DecodeResponse is a generic implementation for decoding a response
 func DecodeResponse(i interface{}) httptransport.DecodeResponseFunc {
   request := reflect.New(reflect.TypeOf(i)).Interface()
   return func(_ context.Context, r *http.Response) (interface{}, error) {
@@ -36,10 +37,12 @@ func DecodeResponse(i interface{}) httptransport.DecodeResponseFunc {
   }
 }
 
+// EncodeResponse is a generic implementation for encoding response
 func EncodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
   return json.NewEncoder(w).Encode(response)
 }
 
+// EncodeRequest is a generic implementation for encoding request
 func EncodeRequest(_ context.Context, r *http.Request, request interface{}) error {
   var buf bytes.Buffer
   if err := json.NewEncoder(&buf).Encode(request); err != nil {
@@ -49,20 +52,23 @@ func EncodeRequest(_ context.Context, r *http.Request, request interface{}) erro
   return nil
 }
 
+// Io is an interface that discribe the io of an endpoint
 type Io struct {
   Request  interface{}
   Response interface{}
   Path     string
 }
 
+// GEndpoint is an interface that describe an endpoint
 type GEndpoint interface {
   GetIo() Io
   MakeEndpoint(interface{}) endpoint.Endpoint
 }
 
+// Service is an interface that describe a service
 type Service interface {
   GetServiceEndpoints() []GEndpoint
-  GetService(instances string, ctx context.Context, logger log.Logger, requestCount metrics.Counter,
+  GetService(ctx context.Context, instances string, logger log.Logger, requestCount metrics.Counter,
   requestLatency metrics.Histogram,
   countResult metrics.Histogram) interface{}
   GetServiceName() string

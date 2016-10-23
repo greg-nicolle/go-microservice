@@ -18,6 +18,7 @@ import (
   "github.com/greg-nicolle/go-microservice/transport"
 )
 
+// Split transform coma separated list to []string
 func Split(s string) []string {
   a := strings.Split(s, ",")
   for i := range a {
@@ -26,7 +27,8 @@ func Split(s string) []string {
   return a
 }
 
-func CreadteProxiingEndpoint(instances []string, ctx context.Context, decodeFunc httptransport.DecodeResponseFunc, path string) endpoint.Endpoint {
+// CreatedProxiingEndpoint return a proxiying endpoint
+func CreatedProxiingEndpoint(ctx context.Context, instances []string, decodeFunc httptransport.DecodeResponseFunc, path string) endpoint.Endpoint {
   var (
     qps = 100                         // beyond which we will return an error
     maxAttempts = 3                   // per request, before giving up
