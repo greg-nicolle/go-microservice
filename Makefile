@@ -26,6 +26,3 @@ clean:
 
 docker-build: ${BINARY}
 	@docker build -t ${DOCKER_IMAGE_NAME} .
-
-docker-push:
-	@docker push ${DOCKER_IMAGE_NAME}

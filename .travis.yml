@@ -1,6 +1,11 @@
 language: go
+sudo: required
+
 go:
   - 1.7.1
+
+services:
+  - docker
 
 install:
   - go get -u github.com/golang/lint/golint
@@ -10,3 +15,6 @@ before_script:
 
 script:
   - make
+
+after_success:
+  - bin/docker_push.sh

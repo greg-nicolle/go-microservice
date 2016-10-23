@@ -2,7 +2,12 @@
 [![Build Status](https://travis-ci.org/greg-nicolle/go-microservice.svg?branch=master)](https://travis-ci.org/greg-nicolle/go-microservice)
 ## Build
 ```shell
-go build *.go
+make
+```
+
+## Test app
+```shell
+make check
 ```
 
 ## Run
