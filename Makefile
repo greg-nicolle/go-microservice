@@ -10,16 +10,16 @@ ${BINARY}:
 check: test lint vet
 
 test:
-	@go test -race -v $(shell go list ./...)
+	@go test -race -v $(shell go list ./... | grep -v /vendor/)
 
 lint:
-	@go list ./... | xargs -L1 golint -set_exit_status
+	@go list ./...  | grep -v /vendor/ |  xargs -L1 golint -set_exit_status
 
 vet:
-	@go vet $(shell go list ./...)
+	@go vet $(shell go list ./... | grep -v /vendor/)
 
 install:
-	@go install $(shell go list ./...)
+	@go install $(shell go list ./... | grep -v /vendor/)
 
 clean:
 	@if [ -f ${BINARY} ] ; then rm ${BINARY} ; fi
