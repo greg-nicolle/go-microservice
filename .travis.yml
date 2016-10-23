@@ -1,0 +1,12 @@
+language: go
+go:
+  - 1.7.1
+
+services:
+  - docker
+
+before_script:
+  - make check
+
+script:
+  - make

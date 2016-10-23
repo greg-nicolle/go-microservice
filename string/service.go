@@ -10,7 +10,8 @@ import (
 type String struct{}
 
 func (String)GetServiceEndpoints() []transport.GEndpoint {
-  return []transport.GEndpoint{UppercaseEndpoint{},
+  return []transport.GEndpoint{
+    UppercaseEndpoint{},
     CountEndpoint{}}
 }
 

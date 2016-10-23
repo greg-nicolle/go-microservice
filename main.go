@@ -13,7 +13,6 @@ import (
   "github.com/greg-nicolle/kit-test/transport"
   "github.com/greg-nicolle/kit-test/string"
   kitprometheus "github.com/go-kit/kit/metrics/prometheus"
-  "fmt"
 )
 
 func main() {
@@ -52,7 +51,6 @@ func main() {
   }, []string{})
 
   services := map[string]transport.Service{}
-  fmt.Println(stringModule.String{}.GetServiceName())
   services[stringModule.String{}.GetServiceName()] = stringModule.String{}
 
   if service, isPresent := services[*serviceName]; isPresent {
