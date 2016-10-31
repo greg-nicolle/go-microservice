@@ -2,22 +2,16 @@ package main
 
 import (
   "flag"
-  "net/http"
-  "os"
-
-  stdprometheus "github.com/prometheus/client_golang/prometheus"
-  "golang.org/x/net/context"
-
-  "github.com/go-kit/kit/log"
-  httptransport "github.com/go-kit/kit/transport/http"
-  "github.com/greg-nicolle/go-microservice/transport"
   "github.com/greg-nicolle/go-microservice/string"
-  kitprometheus "github.com/go-kit/kit/metrics/prometheus"
+  "strings"
+  "github.com/greg-nicolle/go-microservice/domainManager"
+  "os"
+  "github.com/go-kit/kit/log"
 )
 
 func main() {
   var (
-    listen = flag.String("listen", ":8080", "HTTP listen address")
+    listen = flag.Int("listen", 8080, "HTTP listen address")
     proxy = flag.String("proxy", "", "Optional comma-separated list of URLs to proxy uppercase requests")
     serviceName = flag.String("service", "", "Service you want to start")
   )
@@ -27,51 +21,16 @@ func main() {
   logger = log.NewLogfmtLogger(os.Stderr)
   logger = log.NewContext(logger).With("listen", *listen).With("caller", log.DefaultCaller)
 
-  ctx := context.Background()
+  domains := domainManager.Create(*listen, logger)
 
-  //  instrument stuff
-  fieldKeys := []string{"method", "error"}
-  requestCount := kitprometheus.NewCounterFrom(stdprometheus.CounterOpts{
-    Namespace: "my_group",
-    Subsystem: "string_service",
-    Name:      "request_count",
-    Help:      "Number of requests received.",
-  }, fieldKeys)
-  requestLatency := kitprometheus.NewSummaryFrom(stdprometheus.SummaryOpts{
-    Namespace: "my_group",
-    Subsystem: "string_service",
-    Name:      "request_latency_microseconds",
-    Help:      "Total duration of requests in microseconds.",
-  }, fieldKeys)
-  countResult := kitprometheus.NewSummaryFrom(stdprometheus.SummaryOpts{
-    Namespace: "my_group",
-    Subsystem: "string_service",
-    Name:      "count_result",
-    Help:      "The result of each count method.",
-  }, []string{})
+  domains.AddService(stringModule.String{})
+  domains.LaunchService(*serviceName, split(*proxy))
+}
 
-  services := map[string]transport.Service{}
-  services[stringModule.String{}.GetServiceName()] = stringModule.String{}
-
-  if service, isPresent := services[*serviceName]; isPresent {
-    services = map[string]transport.Service{service.GetServiceName():service}
+func split(s string) []string {
+  a := strings.Split(s, ",")
+  for i := range a {
+    a[i] = strings.TrimSpace(a[i])
   }
-
-  for _, service := range services {
-    for _, endpoint := range service.GetServiceEndpoints() {
-      handler := httptransport.NewServer(
-        ctx,
-        endpoint.MakeEndpoint(service.GetService(ctx, *proxy, logger, requestCount,
-          requestLatency,
-          countResult)),
-        transport.DecodeRequest(endpoint.GetIo().Request),
-        transport.EncodeResponse,
-      )
-      http.Handle(endpoint.GetIo().Path, handler)
-    }
-  }
-
-  http.Handle("/metrics", stdprometheus.Handler())
-  logger.Log("msg", "HTTP", "addr", *listen)
-  logger.Log("err", http.ListenAndServe(*listen, nil))
+  return a
 }

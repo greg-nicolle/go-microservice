@@ -2,7 +2,6 @@ package stringModule
 
 import (
   "errors"
-  "fmt"
   "golang.org/x/net/context"
 
   "github.com/go-kit/kit/endpoint"
@@ -11,24 +10,23 @@ import (
   "github.com/greg-nicolle/go-microservice/proxy"
 )
 
-func proxyingMiddleware(ctx context.Context, instances string, logger log.Logger) ServiceMiddleware {
+func proxyingMiddleware(ctx context.Context, instances []string, logger log.Logger) ServiceMiddleware {
   // If instances is empty, don't proxy.
-  if instances == "" {
+  if len(instances) == 0 {
     logger.Log("proxy_to", "none")
     return func(next StringService) StringService {
       return next
     }
   }
 
-  var instanceList = proxy.Split(instances)
-  logger.Log("proxy_to", fmt.Sprint(instanceList))
+  logger.Log("proxy_to", instances[0])
 
   // And finally, return the ServiceMiddleware, implemented by proxymw.
   return func(next StringService) StringService {
-    return proxymw{ctx,
-      next,
-      proxy.CreatedProxiingEndpoint(ctx, instanceList, transport.DecodeResponse(uppercaseResponse{}), "/uppercase"),
-      proxy.CreatedProxiingEndpoint(ctx, instanceList, transport.DecodeResponse(countResponse{}), "/count")}
+    return proxymw{ctx: ctx,
+      next: next,
+      uppercaseProxy: proxy.CreatedProxiingEndpoint(instances, transport.DecodeResponse(uppercaseResponse{}), "/uppercase"),
+      countProxy: proxy.CreatedProxiingEndpoint(instances, transport.DecodeResponse(countResponse{}), "/count")}
   }
 }
 
@@ -36,14 +34,14 @@ func proxyingMiddleware(ctx context.Context, instances string, logger log.Logger
 // provided endpoint, and serving all other (i.e. Count) requests via the
 // next StringService.
 type proxymw struct {
-  ctx       context.Context
-  next      StringService     // Serve most requests via this service...
-  uppercase endpoint.Endpoint // ...except Uppercase, which gets served by this endpoint
-  count     endpoint.Endpoint // ...except Uppercase, which gets served by this endpoint
+  ctx            context.Context
+  next           StringService     // Serve most requests via this service...
+  uppercaseProxy endpoint.Endpoint // ...except Uppercase, which gets served by this endpoint
+  countProxy     endpoint.Endpoint // ...except Uppercase, which gets served by this endpoint
 }
 
-func (mw proxymw) Count(s string) (int, error) {
-  response, err := mw.count(mw.ctx, countRequest{S: s})
+func (mw proxymw) count(s string) (int, error) {
+  response, err := mw.countProxy(mw.ctx, countRequest{S: s})
   if err != nil {
     return -1, err
   }
@@ -55,8 +53,8 @@ func (mw proxymw) Count(s string) (int, error) {
   return resp.V, nil
 }
 
-func (mw proxymw) Uppercase(s string) (string, error) {
-  response, err := mw.uppercase(mw.ctx, uppercaseRequest{S: s})
+func (mw proxymw) uppercase(s string) (string, error) {
+  response, err := mw.uppercaseProxy(mw.ctx, uppercaseRequest{S: s})
   if err != nil {
     return "", err
   }

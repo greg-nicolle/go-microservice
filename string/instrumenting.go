@@ -3,7 +3,6 @@ package stringModule
 import (
 	"fmt"
 	"time"
-
 	"github.com/go-kit/kit/metrics"
 )
 
@@ -24,22 +23,22 @@ type instrmw struct {
 	StringService
 }
 
-func (mw instrmw) Uppercase(s string) (output string, err error) {
+func (mw instrmw) uppercase(s string) (output string, err error) {
 	defer func(begin time.Time) {
 		lvs := []string{"method", "uppercase", "error", fmt.Sprint(err != nil)}
 		mw.requestLatency.With(lvs...).Observe(time.Since(begin).Seconds())
 	}(time.Now())
 
-	output, err = mw.StringService.Uppercase(s)
+	output, err = mw.StringService.uppercase(s)
 	return
 }
 
-func (mw instrmw) Count(s string) (output int, err error) {
+func (mw instrmw) count(s string) (output int, err error) {
 	defer func(begin time.Time) {
 		lvs := []string{"method", "count", "error", "false"}
 		mw.requestLatency.With(lvs...).Observe(time.Since(begin).Seconds())
 	}(time.Now())
 
-  output, err = mw.StringService.Count(s)
+  output, err = mw.StringService.count(s)
 	return
 }

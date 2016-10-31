@@ -11,7 +11,7 @@ func TestUppercaseNominalCase(t *testing.T) {
   expected := "HELLO"
 
   //  When
-  actual, err := entity.Uppercase("hello")
+  actual, err := entity.uppercase("hello")
 
   //  Then
   assert.Equal(t, expected, actual)
@@ -24,7 +24,7 @@ func TestUppercaseEmptyString(t *testing.T) {
   expected := ""
 
   //  When
-  actual, err := entity.Uppercase("")
+  actual, err := entity.uppercase("")
 
   //  Then
   assert.Equal(t, expected, actual)
@@ -37,7 +37,7 @@ func TestCount(t *testing.T) {
   expected := 5
 
   //  When
-  actual, _ := entity.Count("hello")
+  actual, _ := entity.count("hello")
 
   //  Then
   assert.Equal(t, expected, actual)

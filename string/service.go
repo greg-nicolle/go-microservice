@@ -8,7 +8,8 @@ import (
 )
 
 // String implement Service
-type String struct{}
+type String struct {
+}
 
 // GetServiceEndpoints implement GetServiceEndpoints of String
 func (String)GetServiceEndpoints() []transport.GEndpoint {
@@ -19,7 +20,7 @@ func (String)GetServiceEndpoints() []transport.GEndpoint {
 
 // GetService implement GetService of String
 func (String) GetService(ctx context.Context,
-instances string,
+instances []string,
 logger log.Logger,
 requestCount metrics.Counter,
 requestLatency metrics.Histogram,

@@ -11,24 +11,13 @@ import (
   "github.com/go-kit/kit/sd"
 
   jujuratelimit "github.com/juju/ratelimit"
-  "golang.org/x/net/context"
-
   "github.com/go-kit/kit/ratelimit"
   httptransport "github.com/go-kit/kit/transport/http"
   "github.com/greg-nicolle/go-microservice/transport"
 )
 
-// Split transform coma separated list to []string
-func Split(s string) []string {
-  a := strings.Split(s, ",")
-  for i := range a {
-    a[i] = strings.TrimSpace(a[i])
-  }
-  return a
-}
-
 // CreatedProxiingEndpoint return a proxiying endpoint
-func CreatedProxiingEndpoint(ctx context.Context, instances []string, decodeFunc httptransport.DecodeResponseFunc, path string) endpoint.Endpoint {
+func CreatedProxiingEndpoint(instances []string, decodeFunc httptransport.DecodeResponseFunc, path string) endpoint.Endpoint {
   var (
     qps = 100                         // beyond which we will return an error
     maxAttempts = 3                   // per request, before giving up

@@ -7,12 +7,13 @@ import (
   "github.com/greg-nicolle/go-microservice/transport"
 )
 
-type countEndpoint struct{}
+type countEndpoint struct{
+}
 
 func (countEndpoint) MakeEndpoint(svc interface{}) endpoint.Endpoint {
   return func(ctx context.Context, request interface{}) (interface{}, error) {
     req := request.(countRequest)
-    v, err := svc.(StringService).Count(req.S)
+    v, err := svc.(StringService).count(req.S)
     if err != nil {
       return countResponse{v, err.Error()}, nil
     }

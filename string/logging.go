@@ -28,7 +28,7 @@ func (mw logmw) Uppercase(s string) (output string, err error) {
 		)
 	}(time.Now())
 
-	output, err = mw.StringService.Uppercase(s)
+	output, err = mw.StringService.uppercase(s)
 	return
 }
 
@@ -42,6 +42,6 @@ func (mw logmw) Count(s string) (output int, err error) {
 		)
 	}(time.Now())
 
-	output, err = mw.StringService.Count(s)
+	output, err = mw.StringService.count(s)
 	return
 }
