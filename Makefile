@@ -7,6 +7,9 @@ DOCKER_IMAGE_NAME=greg-nicolle/go-microservice
 ${BINARY}:
 	@CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ${BINARY} .
 
+buildandrun:
+	@make clean && go build -a -installsuffix cgo -o ${BINARY} . && ./${BINARY}
+
 check: test lint vet
 
 test:
