@@ -2,9 +2,9 @@ package stringModule
 
 import (
   "github.com/greg-nicolle/go-microservice/transport"
-  "github.com/go-kit/kit/log"
   "golang.org/x/net/context"
   "github.com/go-kit/kit/metrics"
+  "github.com/Sirupsen/logrus"
 )
 
 // String implement Service
@@ -20,7 +20,7 @@ func (String)GetServiceEndpoints() []transport.GEndpoint {
 // GetService implement GetService of String
 func (String) GetService(ctx context.Context,
 instances string,
-logger log.Logger,
+logger logrus.Entry,
 requestCount metrics.Counter,
 requestLatency metrics.Histogram,
 countResult metrics.Histogram) interface{} {

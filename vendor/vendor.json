@@ -3,6 +3,12 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "1aiQTPsf6S2c1Si10CAn4GMXR08=",
+			"path": "github.com/Sirupsen/logrus",
+			"revision": "547e984ad93a90192134fc0fdb57a468edb514fe",
+			"revisionTime": "2017-03-15T15:13:20Z"
+		},
+		{
 			"checksumSHA1": "AbPIozB2QAUgQF4I5wOgKuHPHO4=",
 			"path": "github.com/afex/hystrix-go/hystrix",
 			"revision": "39520ddd07a9d9a071d615f7476798659f5a3b89",
@@ -34,6 +40,12 @@
 			"revisionTime": "2016-06-15T09:26:46Z"
 		},
 		{
+			"checksumSHA1": "pqV2jNzJOijxCGy2Zf3+Q6YAzFc=",
+			"path": "github.com/go-kit/kit",
+			"revision": "b6f30a2e0632f5722fb26d8765d726335b79d3e6",
+			"revisionTime": "2017-03-12T21:25:26Z"
+		},
+		{
 			"checksumSHA1": "UU0y2Vt+HaV+4J1piq7T+WaLBOU=",
 			"path": "github.com/go-kit/kit/circuitbreaker",
 			"revision": "f4b6110ad931c7b2915f65bace5081ec60e17d64",
@@ -46,10 +58,10 @@
 			"revisionTime": "2016-10-04T22:14:28Z"
 		},
 		{
-			"checksumSHA1": "Daojj6D4ZxEWjgQ/bPEfXpzDZRc=",
+			"checksumSHA1": "ZSRtnAM/vH1sl0jxr4HztYI/4vs=",
 			"path": "github.com/go-kit/kit/log",
-			"revision": "f4b6110ad931c7b2915f65bace5081ec60e17d64",
-			"revisionTime": "2016-10-04T22:14:28Z"
+			"revision": "b6f30a2e0632f5722fb26d8765d726335b79d3e6",
+			"revisionTime": "2017-03-12T21:25:26Z"
 		},
 		{
 			"checksumSHA1": "pF0anR01mSDHUYAQ67Pxny3U9PA=",
@@ -195,7 +207,13 @@
 			"path": "golang.org/x/net/context/ctxhttp",
 			"revision": "b400c2eff1badec7022a8c8f5bea058b6315eed7",
 			"revisionTime": "2016-06-19T19:44:24Z"
+		},
+		{
+			"checksumSHA1": "/oZpHfYc+ZgOwYAhlvcMhmETYpw=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "99f16d856c9836c42d24e7ab64ea72916925fa97",
+			"revisionTime": "2017-03-08T15:04:45Z"
 		}
 	],
-	"rootPath": "github.com/greg-nicolle/kit-test"
+	"rootPath": "github.com/greg-nicolle/go-microservice"
 }

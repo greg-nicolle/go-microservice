@@ -3,23 +3,23 @@ package stringModule
 import (
 	"time"
 
-	"github.com/go-kit/kit/log"
+  "github.com/Sirupsen/logrus"
 )
 
-func loggingMiddleware(logger log.Logger) ServiceMiddleware {
+func loggingMiddleware(logger logrus.Entry) ServiceMiddleware {
 	return func(next StringService) StringService {
 		return logmw{logger, next}
 	}
 }
 
 type logmw struct {
-	logger log.Logger
+	logger logrus.Entry
 	StringService
 }
 
 func (mw logmw) Uppercase(s string) (output string, err error) {
 	defer func(begin time.Time) {
-		_ = mw.logger.Log(
+		mw.logger.Info(
 			"method", "uppercase",
 			"input", s,
 			"output", output,
@@ -34,7 +34,7 @@ func (mw logmw) Uppercase(s string) (output string, err error) {
 
 func (mw logmw) Count(s string) (output int, err error) {
 	defer func(begin time.Time) {
-		_ = mw.logger.Log(
+		mw.logger.Info(
 			"method", "count",
 			"input", s,
 			"n", output,

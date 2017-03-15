@@ -8,7 +8,8 @@ import (
   stdprometheus "github.com/prometheus/client_golang/prometheus"
   "golang.org/x/net/context"
 
-  "github.com/go-kit/kit/log"
+  //"github.com/go-kit/kit/log"
+  "github.com/Sirupsen/logrus"
   httptransport "github.com/go-kit/kit/transport/http"
   "github.com/greg-nicolle/go-microservice/transport"
   "github.com/greg-nicolle/go-microservice/string"
@@ -23,9 +24,16 @@ func main() {
   )
   flag.Parse()
 
-  var logger log.Logger
-  logger = log.NewLogfmtLogger(os.Stderr)
-  logger = log.NewContext(logger).With("listen", *listen).With("caller", log.DefaultCaller)
+  var log = logrus.New()
+
+  log.Out = os.Stdout
+  logger := log.WithFields(logrus.Fields{
+    "animal": "walrus",
+    "size":   10,
+  })
+
+  //logger = log.NewLogfmtLogger(os.Stderr)
+  //logger = log.NewContext(logger).With("listen", *listen).With("caller", log.DefaultCaller)
 
   ctx := context.Background()
 
@@ -61,7 +69,7 @@ func main() {
     for _, endpoint := range service.GetServiceEndpoints() {
       handler := httptransport.NewServer(
         ctx,
-        endpoint.MakeEndpoint(service.GetService(ctx, *proxy, logger, requestCount,
+        endpoint.MakeEndpoint(service.GetService(ctx, *proxy, *logger, requestCount,
           requestLatency,
           countResult)),
         transport.DecodeRequest(endpoint.GetIo().Request),
@@ -72,6 +80,6 @@ func main() {
   }
 
   http.Handle("/metrics", stdprometheus.Handler())
-  logger.Log("msg", "HTTP", "addr", *listen)
-  logger.Log("err", http.ListenAndServe(*listen, nil))
+  logger.Info("msg", "HTTP", "addr", *listen)
+  logger.Info("err", http.ListenAndServe(*listen, nil))
 }

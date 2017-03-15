@@ -7,11 +7,11 @@ import (
   "bytes"
   "net/http"
   "golang.org/x/net/context"
-  "github.com/go-kit/kit/log"
 
   httptransport "github.com/go-kit/kit/transport/http"
   "github.com/go-kit/kit/endpoint"
   "github.com/go-kit/kit/metrics"
+  "github.com/Sirupsen/logrus"
 )
 // DecodeRequest is a generic implementation for decoding a request
 func DecodeRequest(i interface{}) httptransport.DecodeRequestFunc {
@@ -68,7 +68,7 @@ type GEndpoint interface {
 // Service is an interface that describe a service
 type Service interface {
   GetServiceEndpoints() []GEndpoint
-  GetService(ctx context.Context, instances string, logger log.Logger, requestCount metrics.Counter,
+  GetService(ctx context.Context, instances string, logger logrus.Entry, requestCount metrics.Counter,
   requestLatency metrics.Histogram,
   countResult metrics.Histogram) interface{}
   GetServiceName() string

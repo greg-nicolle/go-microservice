@@ -6,22 +6,22 @@ import (
   "golang.org/x/net/context"
 
   "github.com/go-kit/kit/endpoint"
-  "github.com/go-kit/kit/log"
   "github.com/greg-nicolle/go-microservice/transport"
   "github.com/greg-nicolle/go-microservice/proxy"
+  "github.com/Sirupsen/logrus"
 )
 
-func proxyingMiddleware(ctx context.Context, instances string, logger log.Logger) ServiceMiddleware {
+func proxyingMiddleware(ctx context.Context, instances string, logger logrus.Entry) ServiceMiddleware {
   // If instances is empty, don't proxy.
   if instances == "" {
-    logger.Log("proxy_to", "none")
+    logger.Info("proxy_to", "none")
     return func(next StringService) StringService {
       return next
     }
   }
 
   var instanceList = proxy.Split(instances)
-  logger.Log("proxy_to", fmt.Sprint(instanceList))
+  logger.Info("proxy_to", fmt.Sprint(instanceList))
 
   // And finally, return the ServiceMiddleware, implemented by proxymw.
   return func(next StringService) StringService {
