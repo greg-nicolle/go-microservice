@@ -3,7 +3,6 @@ package stringModule
 import (
   "github.com/greg-nicolle/go-microservice/transport"
   "golang.org/x/net/context"
-  "github.com/go-kit/kit/metrics"
   "github.com/Sirupsen/logrus"
 )
 
@@ -20,16 +19,12 @@ func (String)GetServiceEndpoints() []transport.GEndpoint {
 // GetService implement GetService of String
 func (String) GetService(ctx context.Context,
 instances string,
-logger logrus.Entry,
-requestCount metrics.Counter,
-requestLatency metrics.Histogram,
-countResult metrics.Histogram) interface{} {
+logger logrus.Entry) interface{} {
 
   var svc StringService
   svc = stringService{}
   svc = proxyingMiddleware(ctx, instances, logger)(svc)
   svc = loggingMiddleware(logger)(svc)
-  svc = instrumentingMiddleware(requestCount, requestLatency, countResult)(svc)
 
   return svc
 }

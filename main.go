@@ -5,7 +5,6 @@ import (
   "net/http"
   "os"
 
-  stdprometheus "github.com/prometheus/client_golang/prometheus"
   "golang.org/x/net/context"
 
   //"github.com/go-kit/kit/log"
@@ -13,7 +12,6 @@ import (
   httptransport "github.com/go-kit/kit/transport/http"
   "github.com/greg-nicolle/go-microservice/transport"
   "github.com/greg-nicolle/go-microservice/string"
-  kitprometheus "github.com/go-kit/kit/metrics/prometheus"
 )
 
 func main() {
@@ -37,27 +35,6 @@ func main() {
 
   ctx := context.Background()
 
-  //  instrument stuff
-  fieldKeys := []string{"method", "error"}
-  requestCount := kitprometheus.NewCounterFrom(stdprometheus.CounterOpts{
-    Namespace: "my_group",
-    Subsystem: "string_service",
-    Name:      "request_count",
-    Help:      "Number of requests received.",
-  }, fieldKeys)
-  requestLatency := kitprometheus.NewSummaryFrom(stdprometheus.SummaryOpts{
-    Namespace: "my_group",
-    Subsystem: "string_service",
-    Name:      "request_latency_microseconds",
-    Help:      "Total duration of requests in microseconds.",
-  }, fieldKeys)
-  countResult := kitprometheus.NewSummaryFrom(stdprometheus.SummaryOpts{
-    Namespace: "my_group",
-    Subsystem: "string_service",
-    Name:      "count_result",
-    Help:      "The result of each count method.",
-  }, []string{})
-
   services := map[string]transport.Service{}
   services[stringModule.String{}.GetServiceName()] = stringModule.String{}
 
@@ -69,9 +46,7 @@ func main() {
     for _, endpoint := range service.GetServiceEndpoints() {
       handler := httptransport.NewServer(
         ctx,
-        endpoint.MakeEndpoint(service.GetService(ctx, *proxy, *logger, requestCount,
-          requestLatency,
-          countResult)),
+        endpoint.MakeEndpoint(service.GetService(ctx, *proxy, *logger)),
         transport.DecodeRequest(endpoint.GetIo().Request),
         transport.EncodeResponse,
       )
@@ -79,7 +54,6 @@ func main() {
     }
   }
 
-  http.Handle("/metrics", stdprometheus.Handler())
   logger.Info("msg", "HTTP", "addr", *listen)
   logger.Info("err", http.ListenAndServe(*listen, nil))
 }
