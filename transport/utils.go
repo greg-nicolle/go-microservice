@@ -6,8 +6,7 @@ import (
   "io/ioutil"
   "bytes"
   "net/http"
-  "golang.org/x/net/context"
-
+  "context"
   httptransport "github.com/go-kit/kit/transport/http"
   "github.com/go-kit/kit/endpoint"
   "github.com/Sirupsen/logrus"

@@ -1,0 +1,23 @@
+package: github.com/greg-nicolle/go-microservice
+import:
+- package: github.com/Sirupsen/logrus
+  version: v0.11.5
+- package: github.com/go-kit/kit
+  version: v0.4.0
+  subpackages:
+  - circuitbreaker
+  - endpoint
+  - ratelimit
+  - sd
+  - sd/lb
+  - transport/http
+- package: github.com/juju/ratelimit
+- package: github.com/sony/gobreaker
+- package: golang.org/x/net
+  subpackages:
+  - context
+testImport:
+- package: github.com/stretchr/testify
+  version: v1.1.4
+  subpackages:
+  - assert

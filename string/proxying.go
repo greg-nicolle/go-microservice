@@ -3,7 +3,7 @@ package stringModule
 import (
   "errors"
   "fmt"
-  "golang.org/x/net/context"
+  "context"
 
   "github.com/go-kit/kit/endpoint"
   "github.com/greg-nicolle/go-microservice/transport"

@@ -4,10 +4,7 @@ import (
   "flag"
   "net/http"
   "os"
-
-  "golang.org/x/net/context"
-
-  //"github.com/go-kit/kit/log"
+  "context"
   "github.com/Sirupsen/logrus"
   httptransport "github.com/go-kit/kit/transport/http"
   "github.com/greg-nicolle/go-microservice/transport"
@@ -30,9 +27,6 @@ func main() {
     "size":   10,
   })
 
-  //logger = log.NewLogfmtLogger(os.Stderr)
-  //logger = log.NewContext(logger).With("listen", *listen).With("caller", log.DefaultCaller)
-
   ctx := context.Background()
 
   services := map[string]transport.Service{}
@@ -45,7 +39,6 @@ func main() {
   for _, service := range services {
     for _, endpoint := range service.GetServiceEndpoints() {
       handler := httptransport.NewServer(
-        ctx,
         endpoint.MakeEndpoint(service.GetService(ctx, *proxy, *logger)),
         transport.DecodeRequest(endpoint.GetIo().Request),
         transport.EncodeResponse,

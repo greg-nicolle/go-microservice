@@ -11,7 +11,7 @@ import (
   "github.com/go-kit/kit/sd"
 
   jujuratelimit "github.com/juju/ratelimit"
-  "golang.org/x/net/context"
+  "context"
 
   "github.com/go-kit/kit/ratelimit"
   httptransport "github.com/go-kit/kit/transport/http"

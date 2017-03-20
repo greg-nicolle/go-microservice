@@ -2,7 +2,7 @@ package stringModule
 
 import (
   "github.com/greg-nicolle/go-microservice/transport"
-  "golang.org/x/net/context"
+  "context"
   "github.com/Sirupsen/logrus"
 )
 
