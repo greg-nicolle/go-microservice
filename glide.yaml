@@ -16,6 +16,10 @@ import:
 - package: golang.org/x/net
   subpackages:
   - context
+- package: github.com/prometheus/client_golang
+  version: v0.8.0
+  subpackages:
+  - prometheus
 testImport:
 - package: github.com/stretchr/testify
   version: v1.1.4

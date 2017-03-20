@@ -19,12 +19,11 @@ func (String)GetServiceEndpoints() []transport.GEndpoint {
 // GetService implement GetService of String
 func (String) GetService(ctx context.Context,
 instances string,
-logger logrus.Entry) interface{} {
+logger logrus.Logger) interface{} {
 
   var svc StringService
   svc = stringService{}
   svc = proxyingMiddleware(ctx, instances, logger)(svc)
-  svc = loggingMiddleware(logger)(svc)
 
   return svc
 }

@@ -66,6 +66,6 @@ type GEndpoint interface {
 // Service is an interface that describe a service
 type Service interface {
   GetServiceEndpoints() []GEndpoint
-  GetService(ctx context.Context, instances string, logger logrus.Entry) interface{}
+  GetService(ctx context.Context, instances string, logger logrus.Logger) interface{}
   GetServiceName() string
 }
