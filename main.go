@@ -1,27 +1,33 @@
 package main
 
 import (
-  "flag"
-  "os"
-  "github.com/Sirupsen/logrus"
-  "github.com/greg-nicolle/go-microservice/string"
-  "github.com/greg-nicolle/go-microservice/domainManager"
+	"flag"
+	"os"
+	"github.com/Sirupsen/logrus"
+	"github.com/greg-nicolle/go-microservice/services/string"
+	"github.com/greg-nicolle/go-microservice/domainManager"
+	"github.com/greg-nicolle/go-microservice/services/wikilog"
+	"github.com/greg-nicolle/go-microservice/configuration"
 )
 
 func main() {
-  var (
-    listen = flag.Int("listen", 8080, "HTTP listen address")
-    proxy = flag.String("proxy", "", "Optional comma-separated list of URLs to proxy uppercase requests")
-    serviceName = flag.String("service", "", "Service you want to start")
-  )
-  flag.Parse()
+	var (
+		serviceName = flag.String("service", "", "Service you want to start")
+		configPath  = flag.String("configPath", "", "Config path")
+	)
+	flag.Parse()
 
-  var log = logrus.New()
+	config := configuration.GetConfig(*configPath)
 
-  log.Out = os.Stdout
+	var log = logrus.New()
 
-  domains := domainManager.Create(*listen, *log)
+	log.Out = os.Stdout
 
-  domains.AddService(stringModule.String{})
-  domains.LaunchService(*serviceName, *proxy)
+	log.Info(*serviceName)
+
+	domains := domainManager.Create(log)
+
+	domains.AddService(stringModule.String{})
+	domains.AddService(wikilog.Wikilog{})
+	domains.LaunchService(*serviceName, config)
 }

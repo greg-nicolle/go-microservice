@@ -12,16 +12,16 @@ make check
 
 ## Run
 
-To run an instance do
+To run all service on one instance
 ```shell
-go run *.go -listen=:8080 &
+go run *.go --configPath ./config.yml --service all
 ```
 
 to run multiple instance do
 ```shell
-go run *.go -listen=:8001 &
-go run *.go -listen=:8001 &
-go run *.go -listen=:8080 -proxy=localhost:8001,localhost:800 &
+go run *.go --configPath ./config.yml --service master
+go run *.go --configPath ./config.yml --service string
+go run *.go --configPath ./config.yml --service wikidata
 ```
 
 ##

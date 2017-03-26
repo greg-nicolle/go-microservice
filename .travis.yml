@@ -7,6 +7,10 @@ go:
 services:
   - docker
 
+before_install:
+  - docker pull elasticsearch:5.1
+  - docker run -p 9200:9200 -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" -d elasticsearch:5.1
+
 install:
   - go get -u github.com/golang/lint/golint
 
