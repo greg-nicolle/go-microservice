@@ -1,0 +1,18 @@
+databases:
+  elasticsearch:
+    host: localhost
+    port: 9200
+
+services:
+  - master:
+    name: master
+    host: localhost
+    port: 8080
+  - string:
+    name: string
+    host: localhost
+    port: 8081
+  - wikilog:
+    name: wikilog
+    host: localhost
+    port: 8082
