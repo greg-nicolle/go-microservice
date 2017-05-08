@@ -4,6 +4,7 @@ import (
 	"github.com/greg-nicolle/go-microservice/transport"
 	"context"
 	"github.com/Sirupsen/logrus"
+	"github.com/greg-nicolle/go-microservice/configuration"
 )
 
 // Wikilog implement Service
@@ -18,10 +19,11 @@ func (Wikilog) GetServiceEndpoints() []transport.GEndpoint {
 // GetService implement GetService of String
 func (Wikilog) GetService(ctx context.Context,
 	instances string,
-	logger *logrus.Logger) interface{} {
+	logger *logrus.Logger,
+	config configuration.Configuration) interface{} {
 
 	var svc Domain
-	svc = wikilogDomain{}
+	svc = wikilogDomain{config}
 	svc = proxyingMiddleware(ctx, instances, logger)(svc)
 
 	return svc

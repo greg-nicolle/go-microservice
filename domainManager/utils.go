@@ -33,7 +33,7 @@ func (d *Domain) AddService(service transport.Service) {
 }
 
 // LaunchService launch services
-func (d *Domain) LaunchService(serviceName string, instancesIP configuration.Configuration) {
+func (d *Domain) LaunchService(serviceName string, config configuration.Configuration) {
 
 	if service, isPresent := d.domainRegistreted[serviceName]; isPresent && serviceName != "all" {
 		d.domainRegistreted = map[string]transport.Service{service.GetServiceName(): service}
@@ -42,15 +42,15 @@ func (d *Domain) LaunchService(serviceName string, instancesIP configuration.Con
 	var host string
 
 	if serviceName == "master" {
-		host = instancesIP.GetServicesHost()
+		host = config.GetServicesHost()
 	}
 
-	port := instancesIP.GetServicePort(serviceName)
+	port := config.GetServicePort(serviceName)
 
 	for _, service := range d.domainRegistreted {
 		for _, endpoint := range service.GetServiceEndpoints() {
 			handler := httptransport.NewServer(
-				endpoint.MakeEndpoint(service.GetService(d.ctx, host, d.logger)),
+				endpoint.MakeEndpoint(service.GetService(d.ctx, host, d.logger, config)),
 				transport.DecodeRequest(endpoint.GetIo().Request),
 				transport.EncodeResponse,
 			)

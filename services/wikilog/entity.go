@@ -4,6 +4,8 @@ import (
 	elastic "gopkg.in/olivere/elastic.v5"
 	"context"
 	"reflect"
+	"github.com/greg-nicolle/go-microservice/configuration"
+	"strconv"
 )
 
 // Domain provides operations on wikiLog.
@@ -11,19 +13,23 @@ type Domain interface {
 	searchPageName(string) ([]string, error)
 }
 
-type wikilogDomain struct{}
-
-type wikiViews struct {
-	Text     string
-	Page     string
-	Language string
-	Sum      int
+type wikilogDomain struct {
+	config configuration.Configuration
 }
 
-func (wikilogDomain) searchPageName(s string) ([]string, error) {
+type wikiViews struct {
+	Text string
+}
+
+func (d wikilogDomain) searchPageName(s string) ([]string, error) {
 	ctx := context.Background()
 
-	client, err := elastic.NewClient(elastic.SetSniff(false), elastic.SetURL("http://127.0.0.1:9200"))
+	seHost := "http://" +
+		d.config.Databases.Elasticsearch.Host +
+		":" +
+		strconv.Itoa(d.config.Databases.Elasticsearch.Port)
+
+	client, err := elastic.NewClient(elastic.SetSniff(false), elastic.SetURL(seHost))
 	if err != nil {
 		panic(err)
 	}

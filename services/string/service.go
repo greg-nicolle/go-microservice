@@ -4,6 +4,7 @@ import (
 	"github.com/greg-nicolle/go-microservice/transport"
 	"context"
 	"github.com/Sirupsen/logrus"
+	"github.com/greg-nicolle/go-microservice/configuration"
 )
 
 // String implement Service
@@ -19,7 +20,8 @@ func (String) GetServiceEndpoints() []transport.GEndpoint {
 // GetService implement GetService of String
 func (String) GetService(ctx context.Context,
 	instances string,
-	logger *logrus.Logger) interface{} {
+	logger *logrus.Logger,
+	config configuration.Configuration) interface{} {
 
 	var svc StringService
 	svc = stringService{}

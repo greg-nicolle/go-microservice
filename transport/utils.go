@@ -10,6 +10,7 @@ import (
 	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/go-kit/kit/endpoint"
 	"github.com/Sirupsen/logrus"
+	"github.com/greg-nicolle/go-microservice/configuration"
 )
 
 // DecodeRequest is a generic implementation for decoding a request
@@ -67,6 +68,9 @@ type GEndpoint interface {
 // Service is an interface that describe a service
 type Service interface {
 	GetServiceEndpoints() []GEndpoint
-	GetService(ctx context.Context, instances string, logger *logrus.Logger) interface{}
+	GetService(ctx context.Context,
+		instances string,
+		logger *logrus.Logger,
+		config configuration.Configuration) interface{}
 	GetServiceName() string
 }
